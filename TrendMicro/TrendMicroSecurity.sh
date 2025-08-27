@@ -38,7 +38,7 @@ install_TrendMicro() {
     echo -e "${GREEN}✅ TrendMicro installed successfully!${NC}"
 
     echo -e "${YELLOW}🔎 Checking ds_agent service status...${NC}"
-    if command -v systemctl &>/dev/null; then
+    if command -v systemctl &>/dev/null && systemctl >/dev/null 2>&1; then
       systemctl status ds_agent --no-pager || true
     elif command -v service &>/dev/null; then
       service ds_agent status || true
@@ -76,14 +76,14 @@ while true; do
   read -p "$(echo -e ${CYAN}👉 Masukkan pilihan [1-3]: ${NC}) " choice
 
   case $choice in
-    1) install_TrendMicro ;;
-    2) uninstall_TrendMicro ;;
-    3)
-      echo -e "${GREEN}👋 Bye!${NC}"
-      remove_files
-      exit 0
-      ;;
-    *) echo -e "${RED}❌ Invalid Choice. Try again.${NC}" ;;
+  1) install_TrendMicro ;;
+  2) uninstall_TrendMicro ;;
+  3)
+    echo -e "${GREEN}👋 Bye!${NC}"
+    remove_files
+    exit 0
+    ;;
+  *) echo -e "${RED}❌ Invalid Choice. Try again.${NC}" ;;
   esac
 
   echo
