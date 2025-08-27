@@ -31,20 +31,30 @@ install_TrendMicro() {
   done
 
   echo -e "📦 ${BLUE}Mengekstrak file ke $DIR...${NC}"
-  tar -xvf "$FILENAME" -C "$DIR" && rm -f "$FILENAME"
+  tar -xvf "$FILENAME" -C "$DIR"
 
   if [ -x "$DIR/tmxbc" ]; then
     sudo "$DIR/tmxbc" install
     echo -e "${GREEN}✅ TrendMicro installed successfully!${NC}"
 
-    echo -e "${YELLOW}🔎 Checking ds_agent service status...${NC}"
-    if command -v systemctl &>/dev/null && systemctl >/dev/null 2>&1; then
-      systemctl status ds_agent --no-pager || true
-    elif command -v service &>/dev/null; then
-      service ds_agent status || true
-    else
-      echo -e "❌ ${RED}Tidak ditemukan systemctl maupun service command.${NC}"
-    fi
+    echo -e "${YELLOW}🔎 Menunggu ds_agent aktif...${NC}"
+    while true; do
+      if command -v systemctl &>/dev/null && systemctl >/dev/null 2>&1; then
+        if systemctl is-active --quiet ds_agent; then
+          echo -e "${GREEN}✅ ds_agent sudah aktif.${NC}"
+          break
+        fi
+      elif command -v service &>/dev/null; then
+        if service ds_agent status >/dev/null 2>&1; then
+          echo -e "${GREEN}✅ ds_agent sudah aktif.${NC}"
+          break
+        fi
+      else
+        echo -e "❌ ${RED}Tidak ditemukan systemctl maupun service command.${NC}"
+        break
+      fi
+      sleep 2
+    done
   else
     echo -e "❌ ${RED}File tmxbc tidak ditemukan atau tidak executable.${NC}"
   fi
