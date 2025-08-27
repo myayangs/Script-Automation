@@ -31,7 +31,7 @@ install_TrendMicro() {
   done
 
   echo -e "📦 ${BLUE}Mengekstrak file ke $DIR...${NC}"
-  tar -xvf "$FILENAME" -C "$DIR"
+  tar -xvf "$FILENAME" -C "$DIR" && rm -f "$FILENAME"
 
   if [ -x "$DIR/tmxbc" ]; then
     sudo "$DIR/tmxbc" install
