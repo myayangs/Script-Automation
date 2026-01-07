@@ -200,7 +200,7 @@ while true; do
 	echo "2) 🔽 Install Server & Workload Protection"
 	echo "3) 🔧 Uninstall Agent"
 	echo "4) ❌ Exit"
-	read -p "$(echo -e ${CYAN}👉 Masukkan pilihan [1-4]: ${NC}) " choice
+	read -p "$(echo -e ${CYAN}👉 Choice [1-4]: ${NC}) " choice
 
 	case $choice in
 	1) install_es ;;
